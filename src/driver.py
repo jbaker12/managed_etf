@@ -12,6 +12,7 @@ import data_collection as dc
 DATA_DIR = "collected_data"
 
 SP500_TICKERS = [
+    "SPY", # For S&P 500 ETF
     "MMM", "AOS", "ABT", "ABBV", "ACN", "ADBE", "AMD", "AES", "AFL", "A", "APD",
     "ABNB", "AKAM", "ALB", "ARE", "ALGN", "ALLE", "LNT", "ALL", "GOOGL", "GOOG",
     "MO", "AMZN", "AMCR", "AEE", "AEP", "AXP", "AIG", "AMT", "AWK", "AMP", "AME",
@@ -69,7 +70,7 @@ def collect_data_for_ticker(ticker, start_date, end_date):
         yahoo_finance_df = dc.get_yahoo_finance_data(ticker, start_date, end_date)
         if yahoo_finance_df is not None:
             yahoo_finance_file_path = os.path.join(DATA_DIR, f"{ticker}_yahoo_finance.csv")
-            yahoo_finance_df.to_csv(yahoo_finance_file_path, index=True)
+            yahoo_finance_df.to_csv(yahoo_finance_file_path, index=False)
             print(f"Yahoo Finance data saved to {yahoo_finance_file_path}")
             return True  # Success
         else:
@@ -121,11 +122,10 @@ def main():
         for future in concurrent.futures.as_completed(future_to_ticker):
             ticker = future_to_ticker[future]
             try:
-                # Get the result of the future 
                 future.result()
             except Exception as exc:
                 print(f'{ticker} generated an exception: {exc}')
-                failed_tickers.append(ticker)  # Add failed ticker to the list
+                failed_tickers.append(ticker) 
 
     # Save failed tickers to a file
     if failed_tickers:

@@ -12,7 +12,7 @@ import numpy as np
 def get_yahoo_finance_data(ticker, start_date, end_date):
     """
     Fetches historical stock data from Yahoo Finance for a given ticker and date range.
-    Calculates log daily returns.
+    Ensures the DataFrame has the correct structure and calculates log daily returns.
 
     Args:
         ticker (str): The stock ticker symbol (e.g., 'AAPL').
@@ -20,7 +20,7 @@ def get_yahoo_finance_data(ticker, start_date, end_date):
         end_date (str): The end date in 'YYYY-MM-DD' format.
 
     Returns:
-        pandas.DataFrame: A DataFrame containing historical stock data with log daily returns, or None if an error occurs.
+        pandas.DataFrame: A DataFrame containing historical stock data with the correct schema, or None if an error occurs.
     """
     print(f"Attempting to fetch Yahoo Finance data for {ticker} from {start_date} to {end_date}...")
     try:
@@ -28,19 +28,30 @@ def get_yahoo_finance_data(ticker, start_date, end_date):
         data = yf.download(ticker, start=start_date, end=end_date, auto_adjust=True, progress=True)
         if not data.empty:
             print(f"Successfully fetched {len(data)} rows of Yahoo Finance data for {ticker}.")
-            
+
+            # Reset index to make 'Date' a column
+            data.reset_index(inplace=True)
+
+            # Dynamically check and rename columns
+            expected_columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
+            missing_columns = [col for col in expected_columns if col not in data.columns]
+            if missing_columns:
+                raise ValueError(f"Missing columns in data: {missing_columns}")
+
             # Calculate log daily returns
-            data['Log_Returns'] = np.log(data['Close'] / data['Close'].shift(1))
-            print(f"Log daily returns calculated for {ticker}.")
-            
+            data['LOG_RETURNS'] = np.log(data['Close'] / data['Close'].shift(1))
+
+            # Ensure the DataFrame has the correct schema
+            data = data[['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'LOG_RETURNS']]
+            data.columns = ['DATE', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME', 'LOG_RETURNS']
+
+            print(f"Data for {ticker} formatted with the correct schema.")
             return data
         else:
             print(f"No Yahoo Finance data found for {ticker} in the specified range.")
             return None
     except Exception as e:
         print(f"Error fetching Yahoo Finance data for {ticker}: {e}")
-        print("Note: yfinance is an unofficial API and can be unreliable due to rate limits or website changes.")
-        print("Consider using official, paid APIs like Polygon.io, FinancialModelingPrep, or Finnhub for production.")
         return None
 
 
