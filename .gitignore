@@ -1,0 +1,8 @@
+# Ignore Python cache files
+__pycache__/
+
+# Ignore Go executables
+monte_carlo_algorithm
+
+# Ignore large file
+src/generated_data/monte_carlo_data.csv

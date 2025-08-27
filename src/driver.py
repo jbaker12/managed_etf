@@ -9,52 +9,60 @@ import data_collection as dc
 
 
 # Define a directory to save the collected data
-DATA_DIR = "collected_data"
+DATA_DIR = "../collected_data"
 
 SP500_TICKERS = [
     "SPY", # For S&P 500 ETF
-    "MMM", "AOS", "ABT", "ABBV", "ACN", "ADBE", "AMD", "AES", "AFL", "A", "APD",
-    "ABNB", "AKAM", "ALB", "ARE", "ALGN", "ALLE", "LNT", "ALL", "GOOGL", "GOOG",
-    "MO", "AMZN", "AMCR", "AEE", "AEP", "AXP", "AIG", "AMT", "AWK", "AMP", "AME",
-    "AMGN", "APH", "ADI", "ANSS", "AON", "APA", "APO", "AAPL", "AMAT", "APTV",
-    "ARCH", "ARNC", "ATO", "ATVI", "ADSK", "AZO", "AVB", "AVY", "BKR", "BAX",
-    "BDX", "BRK.B", "BBY", "BIO", "BIIB", "BLK", "BX", "BAC", "BBWI", "BA",
-    "BK", "BN", "BXP", "BSX", "BMY", "AVGO", "BR", "BRO", "BF.B", "BF.A",
-    "CPB", "COF", "CAH", "KMX", "CCL", "CARR", "CAT", "CBOE", "CDNS", "CDW",
-    "CE", "CNC", "CNP", "CDAY", "CERN", "CF", "CRL", "SCHW", "CHTR", "CVX",
-    "CMG", "CB", "CHD", "CI", "CINF", "CTAS", "C", "CLX", "CME", "CMS", "KO",
-    "CTSH", "CL", "CMCSA", "CAG", "COP", "STZ", "CEG", "COR", "CSGP", "CMA",
-    "CSC", "CMCSA", "CACC", "CSX", "CTLT", "CVS", "DHR", "DRI", "DVA", "DE",
-    "DAL", "XRAY", "DVN", "DXCM", "FANG", "DLR", "DFS", "DIS", "DG", "DLTR",
-    "D", "DPZ", "DOV", "DOW", "DTE", "DUK", "DD", "EMN", "ETN", "EBAY", "ECL",
-    "EIX", "EW", "EA", "EMR", "ENPH", "ETR", "EOG", "EQIX", "EQT", "ES", "ESS",
-    "ELV", "ETSY", "EVRG", "ESRX", "EXC", "EXPE", "EXPD", "XOM", "FDS", "FAST",
-    "FRT", "FDX", "FE", "FIS", "FITB", "FMC", "F", "FTNT", "FTV", "FOXA", "FOX",
-    "BEN", "FCX", "GRMN", "IT", "GD", "GE", "GIS", "GM", "GPC", "GILD", "GLW",
-    "GOOG", "GOOGL", "GPN", "GPS", "GRMN", "GS", "HAL", "HBI", "HAS", "HCA",
-    "PEAK", "HSIC", "HES", "HWM", "HP", "HST", "HRL", "HLT", "HOLX", "HD",
-    "HON", "HPE", "HPQ", "HUM", "HII", "IBM", "IEX", "IDXX", "IFF", "ILMN",
-    "INCY", "IR", "INTC", "ICE", "IBM", "IP", "IPG", "INTU", "ISRG", "IVZ",
-    "IRM", "JBL", "JKHY", "J", "JPM", "JNJ", "KSU", "K", "KVUE", "KMB", "KMI",
-    "KLAC", "KSS", "KR", "LHX", "LRCX", "LW", "LVS", "LEG", "LEN", "LLY", "LNC",
-    "LIN", "LYV", "LKQ", "LMT", "L", "LOW", "LULU", "MAR", "MMC", "MLM", "MAS",
-    "MA", "MKC", "MCD", "MCK", "MDT", "MRK", "META", "MET", "MIK", "MSFT",
-    "MCO", "MPC", "MDLZ", "MNST", "MORG", "MSI", "MS", "MOS", "MSCI", "NDAQ",
-    "NEE", "NEM", "NFLX", "NWSA", "NWS", "NI", "NKE", "NOC", "NLOK", "NCLH",
-    "NRG", "NUE", "NVDA", "NVR", "NXPI", "ORLY", "OXY", "ODFL", "OMC", "OKE",
-    "ORCL", "OGN", "OTIS", "PCAR", "PKG", "PANW", "PARA", "PAYC", "PAYX", "PCG",
-    "PEP", "PFE", "PM", "PSX", "PNR", "PBCT", "PGR", "PLD", "PNC", "POOL",
-    "PPG", "PPL", "PFG", "PG", "PGR", "PRU", "PEG", "PSA", "PHM", "PVH", "QRVO",
-    "PWR", "QCOM", "DGX", "RL", "RJF", "RTX", "O", "REGN", "RF", "RSG", "RMD",
-    "RHI", "ROK", "ROL", "ROP", "ROST", "RCL", "SPGI", "CRM", "SBAC", "SLB",
-    "STX", "SEE", "SRE", "NOW", "SHW", "SPG", "SWKS", "SJM", "SNA", "SO", "LUV",
-    "SWK", "SBUX", "STT", "STE", "SYK", "SYF", "SNPS", "SYY", "TMUS", "TROW",
-    "TTWO", "TPR", "TGT", "TEL", "TDY", "TFX", "TXN", "TXT", "TMO", "TJX", "TSLA",
-    "TXN", "TMO", "TJX", "TSLA", "TRV", "TRMB", "TFC", "TWTR", "TYL", "UDR",
-    "ULTA", "UNP", "UAL", "UNH", "UPS", "URI", "UHS", "VLO", "VAR", "VTR", "VRSK",
-    "VRSN", "V", "VNO", "VMC", "WAB", "WBA", "WMT", "WBD", "WM", "WAT", "WEC",
-    "WFC", "WELL", "WST", "WDC", "WRK", "WY", "WHR", "WMB", "WLTW", "WYNN", "XEL",
-    "XLNX", "XYL", "YUM", "ZBH", "ZION", "ZTS"
+    "A", "AAL", "AAP", "AAPL", "ABBV", "ABC", "ABT", "ACGL", "ACN",
+    "ADBE", "ADI", "ADM", "ADP", "ADSK", "AEE", "AEP", "AES", "AFL", "AIG",
+    "AIZ", "AJG", "AKAM", "ALB", "ALGN", "ALK", "ALL", "ALLE", "AMAT", "AMCR",
+    "AMD", "AME", "AMGN", "AMP", "AMT", "AMZN", "ANET", "ANSS", "AON", "AOS",
+    "APA", "APD", "APH", "APTV", "ARE", "ATO", "AVB", "AVGO", "AVY", "AWK",
+    "AXON", "AXP", "AZO", "BA", "BAC", "BALL", "BAX", "BBWI", "BBY", "BDX",
+    "BEN", "BF-B", "BIIB", "BIO", "BK", "BKNG", "BKR", "BLK", "BMY", "BR",
+    "BRK-B", "BRO", "BSX", "BWA", "BX", "BXP", "C", "CAG", "CAH", "CARR",
+    "CAT", "CB", "CBOE", "CBRE", "CCI", "CCL", "CDNS", "CDW", "CE", "CEG",
+    "CF", "CFG", "CHD", "CHRW", "CHTR", "CI", "CINF", "CL", "CLX", "CMA",
+    "CMCSA", "CME", "CMG", "CMI", "CMS", "CNC", "CNP", "COF", "COO", "COP",
+    "COR", "COST", "CPB", "CPRT", "CPT", "CRM", "CSCO", "CSGP", "CSX", "CTAS",
+    "CTLT", "CTRA", "CTSH", "CVS", "CVX", "D", "DAL", "DD", "DE", "DECK",
+    "DFS", "DG", "DGX", "DHI", "DHR", "DIS", "DLR", "DLTR", "DOV", "DOW",
+    "DPZ", "DRI", "DTE", "DUK", "DVA", "DVN", "DXCM", "EA", "EBAY", "ECL",
+    "ED", "EFX", "EIX", "EL", "ELV", "EMN", "EMR", "ENPH", "EOG", "EPAM",
+    "EQIX", "EQR", "EQT", "ERIE", "ES", "ESS", "ETN", "ETR", "ETSY", "EVRG",
+    "EW", "EXC", "EXPD", "EXPE", "EXR", "F", "FANG", "FAST", "FCX", "FDS",
+    "FDX", "FE", "FFIV", "FI", "FICO", "FIS", "FITB", "FLT", "FMC", "FOX",
+    "FOXA", "FRT", "FSLR", "FTNT", "FTV", "GD", "GE", "GEHC", "GEN", "GILD",
+    "GIS", "GL", "GLW", "GM", "GNRC", "GOOG", "GOOGL", "GPC", "GPN", "GRMN",
+    "GS", "GWW", "HAL", "HAS", "HBAN", "HCA", "HD", "HES", "HIG", "HII",
+    "HLT", "HOLX", "HON", "HPE", "HPQ", "HRL", "HSIC", "HST", "HSY", "HUBB",
+    "HUM", "HWM", "IBM", "ICE", "IDXX", "IEX", "IFF", "ILMN", "INCY", "INTC",
+    "INTU", "INVH", "IP", "IPG", "IQV", "IR", "IRM", "ISRG", "IT", "ITW",
+    "IVZ", "J", "JBHT", "JCI", "JKHY", "JNJ", "JNPR", "JPM", "K", "KDP",
+    "KEY", "KEYS", "KHC", "KIM", "KLAC", "KMB", "KMI", "KMX", "KO", "KR",
+    "KVUE", "L", "LDOS", "LEN", "LH", "LHX", "LIN", "LKQ", "LLY", "LMT",
+    "LNT", "LOW", "LRCX", "LULU", "LUV", "LVS", "LW", "LYB", "LYV", "MA",
+    "MAA", "MAR", "MAS", "MCD", "MCHP", "MCK", "MCO", "MDLZ", "MDT", "MET",
+    "META", "MGM", "MHK", "MKC", "MKTX", "MLM", "MMC", "MMM", "MNST", "MO",
+    "MOH", "MOS", "MPC", "MPWR", "MRK", "MRNA", "MRO", "MS", "MSCI", "MSFT",
+    "MSI", "MTB", "MTD", "MU", "NCLH", "NDAQ", "NDSN", "NEE", "NEM", "NFLX",
+    "NI", "NKE", "NOC", "NOW", "NRG", "NSC", "NTAP", "NTRS", "NUE", "NVDA",
+    "NVR", "NWS", "NWSA", "NXPI", "O", "ODFL", "OGN", "OKE", "OMC", "ON",
+    "ORCL", "ORLY", "OTIS", "OXY", "PANW", "PARA", "PAYC", "PAYX", "PCAR",
+    "PCG", "PEG", "PEP", "PFE", "PFG", "PG", "PGR", "PH", "PHM", "PKG",
+    "PLD", "PM", "PNC", "PNR", "PNW", "PODD", "POOL", "PPG", "PPL", "PRU",
+    "PSA", "PSX", "PTC", "PWR", "PXD", "PYPL", "QCOM", "QRVO", "RCL", "REG",
+    "REGN", "RF", "RHI", "RJF", "RL", "RMD", "ROK", "ROL", "ROP", "ROST",
+    "RSG", "RTX", "RVTY", "SBAC", "SBUX", "SCHW", "SHW", "SJM", "SLB", "SNA",
+    "SNPS", "SO", "SPG", "SPGI", "SRE", "STE", "STT", "STX", "STZ", "SWK",
+    "SWKS", "SYF", "SYK", "SYY", "T", "TAP", "TDG", "TDY", "TECH", "TFC",
+    "TFX", "TGT", "TJX", "TMO", "TMUS", "TPR", "TRGP", "TRMB", "TROW", "TRV",
+    "TSCO", "TSLA", "TT", "TTWO", "TXN", "TXT", "TYL", "UAL", "UDR", "UHS",
+    "ULTA", "UNH", "UNP", "UPS", "URI", "USB", "V", "VFC", "VLO", "VMC",
+    "VRSK", "VRSN", "VRT", "VTR", "VTRS", "VZ", "WAB", "WAT", "WBA", "WBD",
+    "WCN", "WDC", "WEC", "WELL", "WFC", "WHR", "WM", "WMB", "WMT", "WRB",
+    "WRK", "WST", "WTW", "WY", "WYNN", "XEL", "XOM", "XRAY", "XYL", "YUM",
+    "ZBH", "ZBRA", "ZTS"
 ]
 
 def collect_data_for_ticker(ticker, start_date, end_date):
@@ -88,8 +96,8 @@ def main():
     Main function to parse arguments and orchestrate data collection for S&P 500 stocks using threads.
     """
     parser = argparse.ArgumentParser(description="Collect financial data for S&P 500 stocks using multiple threads.")
-    parser.add_argument("--start_date", type=str, default="2023-01-01", help="Start date for historical data (YYYY-MM-DD)")
-    parser.add_argument("--end_date", type=str, default="2024-01-01", help="End date for historical data (YYYY-MM-DD)")
+    parser.add_argument("--start_date", type=str, default="1999-01-01", help="Start date for historical data (YYYY-MM-DD)")
+    parser.add_argument("--end_date", type=str, default="2025-07-01", help="End date for historical data (YYYY-MM-DD)")
     parser.add_argument("--max_workers", type=int, default=5, help="Maximum number of worker threads to use for data collection")
 
     args = parser.parse_args()

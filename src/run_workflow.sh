@@ -2,16 +2,18 @@
 
 # Define paths to scripts and files
 DATA_COLLECTION_SCRIPT="driver.py"
-GO_PROGRAM="algorithm.go"
+MARKET_CAP_SCRIPT="get_market_caps.py"
+MONTE_CARLO="monte_carlo_algorithm.go"
 VISUALIZATION_SCRIPT="visualizations.py"
-TRADE_LEDGER="./generated_data/trade_ledger.txt"
+TRADE_LEDGER="./generated_data/monte_carlo_data_final.csv" 
 
 # Function to display usage instructions
 usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
     echo "  -d    Run the data collection script (driver.py)"
-    echo "  -g    Run the Go program (algorithm.go)"
+    echo "  -g    Run the single Go program (algorithm.go)"
+    echo "  -m    Run the Monte Carlo simulation (monte_carlo_algorithm.go)"
     echo "  -v    Run the visualization script (visualizations.py)"
     echo "  -gv   Run the Go program and visualization script together"
     echo "  -a    Run all steps (data collection, Go program, and visualization)"
@@ -23,6 +25,7 @@ usage() {
 run_data_collection() {
     echo "Running data collection script..."
     python3 "$DATA_COLLECTION_SCRIPT"
+    python3 "$MARKET_CAP_SCRIPT"
     if [ $? -eq 0 ]; then
         echo "Data collection completed successfully."
     else
@@ -31,10 +34,21 @@ run_data_collection() {
     fi
 }
 
+run_monte_carlo() {
+    echo "Running Monte Carlo simulation..."
+    go run $MONTE_CARLO
+    if [ $? -eq 0 ]; then
+        echo "Monte Carlo simulation completed successfully."
+    else
+        echo "Error: Monte Carlo simulation failed."
+        exit 1
+    fi
+}
+
 # Function to run the Go program
 run_go_program() {
     echo "Running Go program..."
-    go run "$GO_PROGRAM"
+    go run $MONTE_CARLO
     if [ $? -eq 0 ]; then
         echo "Go program executed successfully."
     else
@@ -61,7 +75,7 @@ run_visualization() {
 
 # Function to run the Go program and visualization script together
 run_go_and_visualization() {
-    run_go_program
+    run_monte_carlo
     run_visualization
 }
 
@@ -70,8 +84,11 @@ if [ $# -eq 0 ]; then
     usage
 fi
 
-while getopts "dgvah" opt; do
+while getopts "mdgvah" opt; do
     case $opt in
+        m)
+            run_monte_carlo
+            ;;
         d)
             run_data_collection
             ;;
@@ -86,7 +103,7 @@ while getopts "dgvah" opt; do
             ;;
         a)
             run_data_collection
-            run_go_program
+            run_monte_carlo
             run_visualization
             ;;
         h)
