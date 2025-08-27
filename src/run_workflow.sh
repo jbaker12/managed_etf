@@ -5,6 +5,7 @@ DATA_COLLECTION_SCRIPT="driver.py"
 MARKET_CAP_SCRIPT="get_market_caps.py"
 MONTE_CARLO="monte_carlo_algorithm.go"
 VISUALIZATION_SCRIPT="visualizations.py"
+PERFORMANCE_ANALYSIS_SCRIPT="performance_analysis.py"
 TRADE_LEDGER="./generated_data/monte_carlo_data_final.csv" 
 
 # Function to display usage instructions
@@ -65,6 +66,7 @@ run_visualization() {
         exit 1
     fi
     python3 "$VISUALIZATION_SCRIPT"
+    python3 "$PERFORMANCE_ANALYSIS_SCRIPT"
     if [ $? -eq 0 ]; then
         echo "Visualization completed successfully."
     else

@@ -2,11 +2,11 @@
 
 This project consists of three main components that work together to visualize the performance of a trading strategy against a market benchmark.
 
-1.  **Data Retrieval (Python):** The `driver.py` script (which utilizes `data_collection.py`) fetches historical stock data from Yahoo Finance and saves it to a `collected_data` directory.
+1.  **Data Retrieval (Python):** The `driver.py` script (which utilizes `data_collection.py`) fetches historical stock data from Yahoo Finance and saves it to a `collected_data` directory. The `get_market_caps.py` script fetches market cap values for all stocks at the end of the trading period and saves it to the `collected_data` directory.
 
-2.  **Strategy Execution (Go):** The `algorithm.go` program processes the stock data and executes a trading strategy, logging the results to a `trade_ledger.txt` file.
+2.  **Strategy Execution (Go):** The `monte_carlo_algorithrm.go` program processes the stock data and executes a trading strategy, logging the results to a `monte_carlo_data_final.csv` file.
 
-3.  **Visualization (Python):** The `visualizations.py` script reads the trade ledger, calculates the cumulative portfolio value, and generates an interactive HTML chart comparing your strategy's performance to the S&P 500 (SPY).
+3.  **Visualization (Python):** The `visualizations.py` script reads the trade ledger, calculates the cumulative portfolio value, and generates an interactive HTML chart comparing the strategy's performance to the S&P 500 (SPY) for both historical and synthetic data. The `performance_analysis.py` script reads `monte_carlo_data_final.csv` and generates performance metrics to compare the algorithm to the benchmark.
 
 ### Prerequisites
 
@@ -23,7 +23,7 @@ To run this entire project on a Mac, you'll need the following installed:
 Follow these steps to set up your environment and install all the required dependencies.
 
 1.  **Go Program Setup:**
-    First, set up your Go project and install any dependencies for `algorithm.go`. Navigate to your project directory in the terminal and run:
+    First, set up your Go project and install any dependencies for `monte_carlo_algorithm.go`. Navigate to your project directory in the terminal and run:
 
     ```bash
     go mod init <your-module-name>
@@ -74,7 +74,7 @@ Follow these steps in order to run the full workflow.
     python3 visualizations.py
     ```
 
-### Workflow Options
+### Workflow Options (Recommended)
 
 Alternatively, ou can use the `run_workflow.sh` script to execute different parts of the workflow. The script provides the following options when in the `/src` directory:
 
@@ -116,7 +116,7 @@ Alternatively, ou can use the `run_workflow.sh` script to execute different part
    ./run_workflow.sh -gv
    ```
 
-   This will execute the Go program to generate the `trade_ledger.txt` file and then run the visualization script to create the interactive chart.
+   This will execute the Go program to generate the `monte_carlo_data_final.csv` file and then run the visualization script to create the interactive charts.
 
 2. **Run all steps**:
    ```bash
@@ -127,4 +127,7 @@ Alternatively, ou can use the `run_workflow.sh` script to execute different part
 
 ### Output
 
-The script will print status messages to the console as it runs. Upon successful completion, it will create an interactive HTML file named `portfolio_performance.html` in the same directory. You can open this file in any web browser to view your portfolio's performance. VS Code's Live Server plugin is especially useful for this. 
+The script will print status messages to the console as it runs. Upon successful completion, it will create  HTML files named `monte_carlo_analysis_final.html`, `annualized_returns_chart.html`, and `performance_summary_table.html` in `generated_data/plots`. You can open these files in any web browser to view your portfolio's performance. VS Code's Live Server plugin is especially useful for this. 
+
+### Notes
+`src/generated_data/other_iterations/` contains charts and CSVs from other iterations throughout the algorithm's development.
