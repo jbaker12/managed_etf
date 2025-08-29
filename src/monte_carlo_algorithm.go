@@ -3,13 +3,13 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	// "flag"
 	"io/ioutil"
 	"log"
 	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
+
 	// "runtime"
 	"sort"
 	"strconv"
@@ -23,15 +23,15 @@ import (
 
 // --- Configuration ---
 const (
-	shortMALength    = 50
-	longMALength     = 200
-	initialCapital   = 10000.0
-	numSimulations   = 100
-	dataDirectory    = "../collected_data/"
-	outputFile       = "./generated_data/monte_carlo_data_final.csv"
-	perTradeRisk     = 0.02 // Risk 2% of capital per trade
-	blockSize        = 10   // Size of the block for block bootstrapping
-	riskFreeRate     = 0.02 // Annual risk-free interest rate (e.g., 2%)
+	shortMALength  = 50
+	longMALength   = 200
+	initialCapital = 10000.0
+	numSimulations = 100
+	dataDirectory  = "../collected_data/"
+	outputFile     = "./generated_data/monte_carlo_data_final.csv"
+	perTradeRisk   = 0.02 // Risk 2% of capital per trade
+	blockSize      = 10   // Size of the block for block bootstrapping
+	riskFreeRate   = 0.02 // Annual risk-free interest rate (e.g., 2%)
 )
 
 // Trade holds information about a single transaction.
@@ -59,15 +59,6 @@ type dailyValue struct {
 func main() {
 	startTime := time.Now()
 	rand.Seed(14)
-	// seed := flag.Int64("seed", 42, "Random seed for the simulation")
-	// flag.Parse()
-	// rand.Seed(*seed)
-	// // --- CHANGE END ---
-
-	// // --- CHANGE START: Define outputFile using the provided seed ---
-	// outputFile := fmt.Sprintf("./generated_data/monte_carlo_data_seed_%d.csv", *seed)
-	// // --- CHANGE END ---
-
 
 	// 1. Load all historical data and separate SPY from the portfolio
 	fmt.Println("Loading historical data...")
@@ -555,7 +546,6 @@ func loadMarketCaps(filePath string) (map[string]float64, error) {
 	}
 	return caps, nil
 }
-
 
 func precalculateAllMovingAverages(dataframes map[string]dataframe.DataFrame) map[string]dataframe.DataFrame {
 	processed := make(map[string]dataframe.DataFrame)

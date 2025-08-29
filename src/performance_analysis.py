@@ -4,9 +4,7 @@ import os
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-# --- Configuration ---
 DATA_DIR = "./generated_data/"
-# The risk-free rate should match the one used in the Go simulation
 RISK_FREE_RATE = 0.02
 # Approximate number of trading days in a year
 TRADING_DAYS_PER_YEAR = 252
@@ -180,8 +178,8 @@ def run_analysis(input_file: str, management_fee: float, performance_fee: float)
 
 # You can now change the fees and input file directly here
 INPUT_FILE = os.path.join(DATA_DIR, "monte_carlo_data_final.csv")
-MANAGEMENT_FEE = 0.02  # 2%
-PERFORMANCE_FEE = 0.20 # 20%
+MANAGEMENT_FEE = 0.01  # 1%
+PERFORMANCE_FEE = 0.10 # 10%
 
 # Run the analysis with the settings above
 run_analysis(INPUT_FILE, MANAGEMENT_FEE, PERFORMANCE_FEE)
